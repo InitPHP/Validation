@@ -131,12 +131,20 @@ class Validation
     {
         $this->error = [];
         foreach ($this->rule as $rule) {
+            if(!isset($this->data[$rule['key']]) && in_array($rule['key'], $this->optional, true)){
+                continue;
+            }
             if(is_string($rule['rule'])){
                 $this->stringProcessValidation($rule);
             }else{
                 $this->callableProcessValidation($rule);
             }
         }
+        return empty($this->error);
+    }
+
+    public function isValid(): bool
+    {
         return empty($this->error);
     }
 
@@ -159,7 +167,7 @@ class Validation
         $context = array_merge($field, $parse['arguments']);
         if(method_exists($this, $validMethod) !== FALSE){
             $res = $this->{$validMethod}(...$parse['arguments']);
-            if($res === FALSE && !in_array($rule['key'], $this->optional, true)){
+            if($res === FALSE){
                 $this->error[] = empty($rule['err']) ? $this->__r($rule['key'], $parse['method'], $context) : $this->interpolate($rule['err'], $context);
                 return false;
             }
@@ -167,7 +175,7 @@ class Validation
         }
         if(function_exists($parse['method'])){
             $res = (bool)call_user_func_array($parse['method'], $parse['arguments']);
-            if($res === FALSE && !in_array($rule['key'], $this->optional, true)){
+            if($res === FALSE){
                 $this->error[] = empty($rule['err']) ? $this->__r($rule['key'], $parse['method'], $context) : $this->interpolate($rule['err'], $context);
                 return false;
             }
@@ -181,7 +189,7 @@ class Validation
         $arguments = [($this->data[$rule['key']] ?? null)];
         $res = (bool)call_user_func_array($rule['rule'], $arguments);
         $field = ['field' => $rule['key']];
-        if($res === FALSE && !in_array($rule['key'], $this->optional, true)){
+        if($res === FALSE){
             $this->error[] = empty($rule['err']) ? $this->__r($rule['key'], 'callable', $field) : $this->interpolate($rule['err'], $field);
             return false;
         }

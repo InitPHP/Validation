@@ -1,6 +1,10 @@
-# Validation
+# InitPHP Validation
+
+Simple and fast library for verifying that the data is of the type and structure you want.
 
 [![Latest Stable Version](http://poser.pugx.org/initphp/validation/v)](https://packagist.org/packages/initphp/validation) [![Total Downloads](http://poser.pugx.org/initphp/validation/downloads)](https://packagist.org/packages/initphp/validation) [![Latest Unstable Version](http://poser.pugx.org/initphp/validation/v/unstable)](https://packagist.org/packages/initphp/validation) [![License](http://poser.pugx.org/initphp/validation/license)](https://packagist.org/packages/initphp/validation) [![PHP Version Require](http://poser.pugx.org/initphp/validation/require/php)](https://packagist.org/packages/initphp/validation)
+
+- [ChangeLog](./CHANGELOG.md)
 
 ## Requirements
 
