@@ -7,7 +7,7 @@
  * @author     Muhammet ŞAFAK <info@muhammetsafak.com.tr>
  * @copyright  Copyright © 2022 InitPHP
  * @license    http://initphp.github.io/license.txt  MIT
- * @version    1.0
+ * @version    1.0.2
  * @link       https://www.muhammetsafak.com.tr
  */
 
@@ -65,7 +65,7 @@ trait RulesTrait
         ],
     ];
 
-    private array $patterns = [
+    protected array $patterns = [
         'uri' => '[A-Za-z0-9-\/_?&=]+',
         'slug' => '[-a-z0-9_-]',
         'url' => '[A-Za-z0-9-:.\/_?&=#]+',
@@ -81,7 +81,7 @@ trait RulesTrait
         'address' => '[\p{L}0-9\s.,()°-]+',
         'date_dmy' => '[0-9]{1,2}\-[0-9]{1,2}\-[0-9]{4}',
         'date_ymd' => '[0-9]{4}\-[0-9]{1,2}\-[0-9]{1,2}',
-        'email' => '[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+[.]+[a-z-A-Z]'
+        'email' => '[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+[.]?[a-z-A-Z]?'
     ];
 
     protected function rule_integer($data): bool
@@ -167,13 +167,19 @@ trait RulesTrait
         return (bool)filter_var((string)$data, FILTER_VALIDATE_EMAIL);
     }
 
-    protected function rule_mailhost($data, $domain): bool
+    protected function rule_mailhost($data, ...$domain): bool
     {
         if(filter_var($data, FILTER_VALIDATE_EMAIL)){
-            $parse = explode('@', $data);
-            $parseDNS = $parse[1] ?? null;
-            if(trim($parseDNS) === trim($domain)){
-                return true;
+            $parse = explode('@', $data, 2);
+            $mailHost = trim(($parse[1] ?? ''));
+            foreach ($domain as $host) {
+                $host = trim($host);
+                if(empty($host)){
+                    continue;
+                }
+                if($mailHost === $host){
+                    return true;
+                }
             }
         }
         return false;
@@ -184,15 +190,21 @@ trait RulesTrait
         return (bool)filter_var((string)$data, FILTER_VALIDATE_URL);
     }
 
-    protected function rule_urlhost($data, $domain): bool
+    protected function rule_urlhost($data, ...$domains): bool
     {
         if(filter_var($data, FILTER_VALIDATE_URL)){
             $host = parse_url($data, PHP_URL_HOST);
-            if($host === $domain){
-                return true;
-            }
-            if(mb_substr($host, -(mb_strlen($domain) + 1)) === '.' . $domain){
-                return true;
+            foreach ($domains as $domain) {
+                $domain = trim($domain);
+                if(empty($domain)){
+                    continue;
+                }
+                if($domain === $host){
+                    return true;
+                }
+                if(mb_substr($host, (0 - (mb_strlen($domain) + 1))) === '.' . $domain){
+                    return true;
+                }
             }
         }
         return false;
@@ -360,7 +372,7 @@ trait RulesTrait
 
     protected function rule_in($data, $search): bool
     {
-        if(is_string($data) && is_numeric($data)){
+        if(is_string($data) || is_numeric($data)){
             return mb_stripos((string)$data, (string)$search) !== FALSE;
         }
         if(is_array($data)){

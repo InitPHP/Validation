@@ -1,5 +1,7 @@
 /.idea/
 /.vscode/
 /.vs/
+/Example/
 /vendor/
 /composer.lock
+/.phpunit.result.cache

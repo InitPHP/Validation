@@ -7,7 +7,7 @@
  * @author     Muhammet ŞAFAK <info@muhammetsafak.com.tr>
  * @copyright  Copyright © 2022 InitPHP
  * @license    http://initphp.github.io/license.txt  MIT
- * @version    1.0
+ * @version    1.0.2
  * @link       https://www.muhammetsafak.com.tr
  */
 
@@ -81,6 +81,13 @@ class Validation
         return $this;
     }
 
+    public function pattern(string $name, string $pattern = '[\w]+'): self
+    {
+        $name = strtolower($name);
+        $this->patterns[$name] = $pattern;
+        return $this;
+    }
+
     /**
      * @param string|string[] $key
      * @param string|callable|string[]|callable[] $rule
@@ -140,6 +147,7 @@ class Validation
                 $this->callableProcessValidation($rule);
             }
         }
+        $this->rule = [];
         return empty($this->error);
     }
 

@@ -8,6 +8,11 @@
             "InitPHP\\Validation\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\InitPHP\\Validation\\": "tests/Validation/"
+        }
+    },
     "authors": [
         {
             "name": "Muhammet ŞAFAK",
@@ -20,5 +25,8 @@
     "require": {
         "php": ">=7.4",
         "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "9.5"
     }
 }

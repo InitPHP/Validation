@@ -77,26 +77,6 @@ if($validation->validation()){
     }
 }
 ```
-**Again Usage**
-```php
-require_once "vendor/autoload.php";
-use \InitPHP\Validation\Validation;
-
-$validation = new Validation($_GET);
-
-// GET /?password=123a456&password_again=123a456
-
-$validation->rule('password', 'string');
-$validation->rule('password', 'again(password_again)');
-
-if($validation->validation()){
-    // ... process
-}else{
-    foreach ($validation->getError() as $err) {
-        echo $err . "<br />\n";
-    }
-}
-```
 
 **Callable verification rule;**
 
@@ -123,6 +103,8 @@ if($validation->validation()){
     }
 }
 ```
+
+**_You can review the `tests/Validation/ValidationUnitTest.php` file to view sample usages._**
 
 ## Getting Help
 
