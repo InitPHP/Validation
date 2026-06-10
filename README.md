@@ -1,133 +1,246 @@
 # InitPHP Validation
 
-Simple and fast library for verifying that the data is of the type and structure you want.
+Fast, dependency-free data validation for PHP. Describe what each field should
+look like with a small rule DSL (`"required|integer|range(1...10)"`), callbacks,
+or custom named rules, and get back localized error messages.
 
-[![Latest Stable Version](http://poser.pugx.org/initphp/validation/v)](https://packagist.org/packages/initphp/validation) [![Total Downloads](http://poser.pugx.org/initphp/validation/downloads)](https://packagist.org/packages/initphp/validation) [![Latest Unstable Version](http://poser.pugx.org/initphp/validation/v/unstable)](https://packagist.org/packages/initphp/validation) [![License](http://poser.pugx.org/initphp/validation/license)](https://packagist.org/packages/initphp/validation) [![PHP Version Require](http://poser.pugx.org/initphp/validation/require/php)](https://packagist.org/packages/initphp/validation)
+[![CI](https://github.com/InitPHP/Validation/actions/workflows/ci.yml/badge.svg)](https://github.com/InitPHP/Validation/actions/workflows/ci.yml)
+[![Latest Stable Version](http://poser.pugx.org/initphp/validation/v)](https://packagist.org/packages/initphp/validation) [![Total Downloads](http://poser.pugx.org/initphp/validation/downloads)](https://packagist.org/packages/initphp/validation) [![License](http://poser.pugx.org/initphp/validation/license)](https://packagist.org/packages/initphp/validation) [![PHP Version Require](http://poser.pugx.org/initphp/validation/require/php)](https://packagist.org/packages/initphp/validation)
 
-- [ChangeLog](./CHANGELOG.md)
+- [Documentation](./docs/README.md)
+- [Changelog](./CHANGELOG.md)
 
 ## Requirements
 
-- PHP 7.4 or higher
-- PHP MB_String Extension
+- PHP 8.1 or higher
+- `ext-mbstring`
 
 ## Installation
 
-```
+```bash
 composer require initphp/validation
 ```
 
-# Validation Rules
-
-- `integer` : Verifies that the data is an integer.
-- `float` : Verifies that the data is a floating point number.
-- `numeric` : Verifies that the data is a numeric value.
-- `string` : Verifies that the data is of a string type.
-- `boolean` : Verifies that the data has a logical value or equivalent.
-- `array` : Verifies that the data is an array.
-- `mail` : Verifies that the data is an E-Mail address.
-- `mailHost` : Verifies that the data is the E-Mail address using the specified host.
-- `url` : Verifies that the data is a URL address.
-- `urlHost` : Verifies that the data is a URL of the specified host (or subdomain).
-- `empty` : Verifies that the data is empty.
-- `required` : Verifies that the data is not null.
-- `min` : Defines the minimum value the data can have. Specifies the minimum number of elements/characters if the data is a string or array.
-- `max` : Defines the maximum value the data can have. Specifies the maximum number of elements/characters if the data is a string or array.
-- `length` : Verifies that the number of characters is within the specified range.
-- `range` : The numeric value must be within the specified range.
-- `regex` : Validates data with a predefined or postdefined regular expression.
-- `date` : Attempts to verify that the data is a date.
-- `dateFormat` : Verifies that the data is a date in a specified format.
-- `ip` : Verifies that the data is IP address.
-- `ipv4` : Verifies that the data is IPv4.
-- `ipv6` : Verifies that the data is IPv6.
-- `again` : Verifies that the data is the same as the value of a data key.
-- `equals` : Verifies that the data is equivalent to the specified value.
-- `startWith` : Verifies that the data starts with the specified value.
-- `endWith` : Array or String. Verifies that the data ends with the specified value.
-- `in` : Case-insensitive verifies that the specified value is in the data.
-- `notIn` : Case-insensitive verifies that the specified value is not in the data.
-- `contains` : Verifies that the specified case-sensitive value is in the data.
-- `notContains` : Verifies that the specified case-sensitive value is not in the data.
-- `alpha` : Verifies that the data is an alpha value.
-- `alphaNum` : Verifies that the data is an alphanumeric value.
-- `creditCard` : Verifies that the data is a credit card number.
-- `only` : It validates only one of the specified values, case-insensitively.
-- `strictOnly` : Case sensitive only validates that it is one of the values specified.
-- `optional` : If there is data, it must obey the rules, but if there is no data with the corresponding key, the validation will not fail.
-
-## Usage
+## Quick start
 
 ```php
-require_once "vendor/autoload.php";
-use \InitPHP\Validation\Validation;
+require 'vendor/autoload.php';
 
-$validation = new Validation($_GET);
+use InitPHP\Validation\Validation;
 
 // GET /?name=Muhammet&year=2022
-
-$validation->rule('name', 'string');
-$validation->rule('year', 'integer|range(1970...2099)');
-
-if($validation->validation()){
-    // ... process
-}else{
-    foreach ($validation->getError() as $err) {
-        echo $err . "<br />\n";
-    }
-}
-```
-
-**Callable verification rule;**
-
-```php
-require_once "vendor/autoload.php";
-use \InitPHP\Validation\Validation;
-
 $validation = new Validation($_GET);
 
-// GET /?number=13
+$validation->rule('name', 'required|string');
+$validation->rule('year', 'integer|range(1970...2099)');
 
-$validation->rule('number', function ($data) {
-    if(($data % 2) == 0){
-        return true;
-    }
-    return false;
-}, "{field} must be an even number.");
-
-if($validation->validation()){
-    // ... process
-}else{
-    foreach ($validation->getError() as $err) {
-        echo $err . "<br />\n";
+if ($validation->validation()) {
+    // ... the data is valid
+} else {
+    foreach ($validation->getError() as $message) {
+        echo $message . "\n";
     }
 }
 ```
 
-**_You can review the `tests/Validation/ValidationUnitTest.php` file to view sample usages._**
+## How it works
 
-## Getting Help
+1. **Give it data.** Pass an associative array to the constructor, or use
+   `setData()` / `mergeData()`.
+2. **Queue rules.** Each `rule()` call adds checks for one or more fields.
+3. **Validate.** `validation()` runs every queued rule, returns `true` when
+   nothing failed, and **consumes** the queued rules — so the usual flow is
+   *queue → validate → read errors*, repeated as needed.
+4. **Read errors.** `getError()` returns the messages from the most recent run.
 
-If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker.
+```php
+$validation = new Validation([
+    'email'    => 'someone@example.com',
+    'password' => 'secret',
+    'confirm'  => 'secret',
+]);
 
-## Getting Involved
+$valid = $validation
+    ->rule('email', 'required|mail')
+    ->rule('password', 'required|length(8...)')
+    ->rule('confirm', 'again(password)')
+    ->validation();
+```
 
-> All contributions to this project will be published under the MIT License. By submitting a pull request or filing a bug, issue, or feature request, you are agreeing to comply with this waiver of copyright interest.
+## Rules
 
-There are two primary ways to help:
+A rule string is a pipe-separated list. Arguments go in parentheses and are
+comma-separated; arguments are trimmed, so `only(a, b, c)` and `only(a,b,c)` are
+equivalent. Rule names are matched case-insensitively.
 
-- Using the issue tracker, and
-- Changing the code-base.
-    
-### Using the issue tracker
+| Rule | Description |
+| ---- | ----------- |
+| `required` | The value is present and not a blank string (numbers and non-empty arrays pass). |
+| `optional` | Pseudo-rule. If the field is absent, its other rules are skipped instead of failing. |
+| `empty` | The value is empty once trimmed. |
+| `integer` | An integer or an integer-looking string. |
+| `float` | A float/int or a float-looking string. |
+| `numeric` | A numeric value. |
+| `string` | A string. |
+| `boolean` | A real boolean or one of `true`, `false`, `1`, `0`. |
+| `array` | An array. |
+| `alpha` | Letters only (Unicode-aware). |
+| `alphanum` / `alphanumeric` | Letters and digits only. |
+| `mail` | A valid e-mail address. |
+| `mailHost(host, ...)` | A valid e-mail at one of the given hosts. |
+| `url` | A valid URL. |
+| `urlHost(domain, ...)` | A URL whose host equals, or is a subdomain of, one of the domains. |
+| `ip` / `ipv4` / `ipv6` | A valid IP address of the given family. |
+| `min(n)` | Numbers `>= n`; for strings/arrays the length/count `>= n`. |
+| `max(n)` | Numbers `<= n`; for strings/arrays the length/count `<= n`. |
+| `range(min...max)` | A number within the range. Also accepts `min-max`, `...max`, `min...`. |
+| `length(min...max)` | String length / array count within range. A single number is the maximum; open bounds (`...max`, `min...`) are allowed. |
+| `regex(name\|body)` | Matches a [named pattern](#named-patterns) or an inline regex body. |
+| `date` | A `DateTimeInterface`, or any string `strtotime()` understands. |
+| `dateFormat(format)` | A date string in the given `date()` format, e.g. `dateFormat(Y/m/d)`. |
+| `again(field)` | Loosely equals the value of another field. |
+| `equals(value)` | Loosely equals the given value. |
+| `startWith(value)` | A string starting with the value, or an array whose first element equals it. |
+| `endWith(value)` | A string ending with the value, or an array whose last element equals it. |
+| `in(needle)` | Case-insensitive substring (strings) or strict membership (arrays). |
+| `notIn(needle)` | The inverse of `in`. |
+| `contains(needle)` | Case-sensitive substring. |
+| `notContains(needle)` | The inverse of `contains`. |
+| `only(a, b, ...)` | Case-insensitively equals one of the options. |
+| `strictOnly(a, b, ...)` | Case-sensitively equals one of the options. |
+| `creditCard(type?)` | A credit card number. Optional type: `amex`, `visa`, `mastercard`, `maestro`, `jcb`, `solo`, `switch`. |
 
-Use the issue tracker to suggest feature requests, report bugs, and ask questions. This is also a great way to connect with the developers of the project as well as others who are interested in this solution.
+See [`docs/rules-reference.md`](./docs/rules-reference.md) for a per-rule
+reference with examples.
 
-Use the issue tracker to find ways to contribute. Find a bug or a feature, mention in the issue that you will take on that effort, then follow the Changing the code-base guidance below.
+## Callable rules
 
-### Changing the code-base
+Pass a callback as the rule. It receives the field value and returns a boolean.
+The third argument to `rule()` is a custom message.
 
-Generally speaking, you should fork this repository, make changes in your own fork, and then submit a pull request. All new code should have associated unit tests that validate implemented features and the presence or lack of defects. Additionally, the code should follow any stylistic and architectural guidelines prescribed by the project. In the absence of such guidelines, mimic the styles and patterns in the existing code-base.
+```php
+$validation = new Validation(['number' => 13]);
+
+$validation->rule('number', static function ($value): bool {
+    return ($value % 2) === 0;
+}, '{field} must be an even number.');
+
+$validation->validation();            // false
+$validation->getError();              // ["number must be an even number."]
+```
+
+You can also mix strings and callbacks in one array:
+
+```php
+$validation->rule('number', ['integer', static fn ($v): bool => $v > 0]);
+```
+
+## Custom named rules
+
+Register reusable rules with `extend()` so they work inside the DSL string,
+arguments and all:
+
+```php
+$validation->extend(
+    'divisible',
+    static fn ($value, $by): bool => ((int) $value % (int) $by) === 0,
+    '{field} must be divisible by {2}.'
+);
+
+$validation->rule('quantity', 'divisible(5)');
+```
+
+## Optional fields
+
+`optional` skips a field's rules when it has no value, but still validates it
+when present:
+
+```php
+$validation->rule('nickname', 'optional|alpha|length(3...20)');
+```
+
+## Named patterns
+
+The `regex` rule can reference a named pattern. Built-in names include `uri`,
+`slug`, `url`, `alpha`, `words`, `alphanum`, `int`, `float`, `tel`, `text`,
+`file`, `folder`, `address`, `date_dmy`, `date_ymd` and `email`. Register your
+own with `pattern()`:
+
+```php
+$validation->pattern('product_code', '[A-Z]{2}-[0-9]{4}');
+$validation->rule('code', 'regex(product_code)');
+```
+
+## Error messages and localization
+
+Messages support `{field}` and positional placeholders: `{1}` is the value and
+`{2}` is the first rule argument.
+
+```php
+$validation->rule('age', 'min(18)');
+// "age must be greater than or equal to 18."
+```
+
+Replace raw field names with friendly labels:
+
+```php
+$validation->labels(['age' => 'Age']);
+// "Age must be greater than or equal to 18."
+```
+
+Switch language (the package ships with `en` and `tr`), or override individual
+messages:
+
+```php
+$validation->setLocale('tr');
+$validation->setLocaleArray(['integer' => '{field} is not a whole number.']);
+```
+
+Point at your own language directory with `setLocaleDir()`. See
+[`docs/localization-and-messages.md`](./docs/localization-and-messages.md).
+
+## Exceptions
+
+Everything thrown by the package implements
+`InitPHP\Validation\Exception\ExceptionInterface`:
+
+- `UndefinedRuleException` — a rule name was used that is neither built-in nor
+  registered with `extend()`. Unknown rules fail loudly instead of silently
+  passing.
+- `InvalidArgumentException` — a key or rule entry had an unsupported type.
+- `LocaleException` — a locale directory or file could not be loaded.
+
+## Upgrading from 1.x
+
+Version 2.0 is a breaking release. The headline changes:
+
+- **Requires PHP 8.1+** (was 7.4+).
+- **Callable rules now work** — they previously threw a `TypeError`.
+- **Unknown rules now throw** `UndefinedRuleException` instead of silently
+  passing validation.
+- **Rules are no longer dispatched to arbitrary global functions** (a
+  surprising and unsafe behaviour). Use `extend()` for custom logic.
+- Error-message keys resolve case-insensitively, the `again` message now
+  resolves in English, and several edge cases were fixed (argument trimming,
+  open-ended `length`/`range` bounds, null-safety, loose `equals`/`again`).
+
+Full notes: [`docs/upgrading-from-1.x.md`](./docs/upgrading-from-1.x.md).
+
+## Testing
+
+```bash
+composer test       # PHPUnit
+composer stan       # PHPStan (max level)
+composer cs-check   # PHP-CS-Fixer (dry run)
+composer ci         # all of the above
+```
+
+## Contributing
+
+Contributions are welcome. Please read the org-wide
+[Contributing guide](https://github.com/InitPHP/.github/blob/main/CONTRIBUTING.md)
+and open a pull request against `main`. New behaviour should come with tests,
+and `composer ci` should pass.
 
 ## Credits
 
@@ -135,4 +248,4 @@ Generally speaking, you should fork this repository, make changes in your own fo
 
 ## License
 
-Copyright &copy; 2022 [MIT License](./LICENSE) 
+Released under the [MIT License](./LICENSE). Copyright &copy; 2022 InitPHP.

@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Tests\InitPHP\Validation;
 
 use InitPHP\Validation\Validation;
 
 class ValidationUnitTest extends \PHPUnit\Framework\TestCase
 {
-
     protected Validation $validation;
 
     protected function setUp(): void
@@ -15,7 +16,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         parent::setUp();
     }
 
-    public function testFloatRuleValid()
+    public function testFloatRuleValid(): void
     {
         $this->validation->setData([
             'id'        => '12', // Every integer is also a float value.
@@ -37,7 +38,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testIntegerRuleValid()
+    public function testIntegerRuleValid(): void
     {
         $this->validation->setData([
             'id'        => '12',
@@ -59,12 +60,12 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testAlphaRuleValid()
+    public function testAlphaRuleValid(): void
     {
         $this->validation->setData([
             'id'        => '12',
             'name'      => 'product',
-            'title'     => 'Product Name' // The space character is not an alphabetic value.
+            'title'     => 'Product Name', // The space character is not an alphabetic value.
         ]);
 
         $this->validation->rule('id', 'alpha');
@@ -78,12 +79,12 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testAlphaNumRuleValid()
+    public function testAlphaNumRuleValid(): void
     {
         $this->validation->setData([
             'id'        => '12',
             'name'      => 'product',
-            'title'     => 'Product Name' // The space character is not an alphanumeric value.
+            'title'     => 'Product Name', // The space character is not an alphanumeric value.
         ]);
 
         $this->validation->rule('id', 'alphanum');
@@ -97,7 +98,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testNumericRuleValid()
+    public function testNumericRuleValid(): void
     {
         $this->validation->setData([
             'id'        => '12',
@@ -119,7 +120,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testCreditCardRuleValid()
+    public function testCreditCardRuleValid(): void
     {
         $this->validation->setData([
             'id'                => '12334',
@@ -168,14 +169,14 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testStringRuleValid()
+    public function testStringRuleValid(): void
     {
         // This validation method tests the type of data.
 
         $this->validation->setData([
             'id'        => 12, // It is an integer, not a string
             'name'      => 'admin',
-            'time'      => '12345678901' // This is a string.
+            'time'      => '12345678901', // This is a string.
         ]);
 
         $this->validation->rule('id', 'string');
@@ -188,7 +189,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testBooleanRuleValid()
+    public function testBooleanRuleValid(): void
     {
         // All values defined below are considered boolean.
         $this->validation->setData([
@@ -228,12 +229,12 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testMailRuleValid()
+    public function testMailRuleValid(): void
     {
         $this->validation->setData([
             'mail_1'        => 'example@gmail.com',
             'mail_2'        => 'example@outlook.com',
-            'mail_3'        => 'random value'
+            'mail_3'        => 'random value',
         ]);
 
         $this->validation->rule('mail_1', 'mail');
@@ -267,7 +268,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testUrlRuleValid()
+    public function testUrlRuleValid(): void
     {
         $this->validation->setData([
             'url_1'         => 'http://www.example.com',
@@ -293,11 +294,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testEmptyRuleValid()
+    public function testEmptyRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '   ', // An empty string is an empty value.
-            'key_2'     => 'abc'
+            'key_2'     => 'abc',
         ]);
 
         $this->validation->rule('key_1', 'empty');
@@ -313,7 +314,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testMinRuleValid()
+    public function testMinRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '3.14',
@@ -343,7 +344,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testMaxRuleValid()
+    public function testMaxRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '3.14',
@@ -374,7 +375,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testRangeRuleValid()
+    public function testRangeRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '3.14',
@@ -398,7 +399,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testLengthRuleValid()
+    public function testLengthRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '3.14', // a 4-character string
@@ -431,7 +432,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testRegexRuleValid()
+    public function testRegexRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '13',
@@ -456,14 +457,14 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testDateRuleValid()
+    public function testDateRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '2022/01/01',
             'key_2'     => '2020-03-03',
             'key_3'     => '10 September 2000',
             'key_4'     => 'not good', // false
-            'key_5'     => 'next Thursday'
+            'key_5'     => 'next Thursday',
         ]);
         $this->validation->rule('key_1', 'date');
         $this->assertTrue($this->validation->validation());
@@ -481,10 +482,10 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testDateFormatRuleValid()
+    public function testDateFormatRuleValid(): void
     {
         $this->validation->setData([
-            'key_1'     => '2022/01/01'
+            'key_1'     => '2022/01/01',
         ]);
 
         $this->validation->rule('key_1', 'dateFormat(Y/m/d)');
@@ -494,7 +495,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testIPsRuleValid()
+    public function testIPsRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '111.111.11.11',
@@ -531,10 +532,10 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testOnlyRuleValid()
+    public function testOnlyRuleValid(): void
     {
         $this->validation->setData([
-            'key_1'     => 'Hamburger'
+            'key_1'     => 'Hamburger',
         ]);
 
         $this->validation->rule('key_1', 'only(food,tea,meat)');
@@ -552,13 +553,13 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testAgainRuleValid()
+    public function testAgainRuleValid(): void
     {
         $this->validation->setData([
             'password'          => '123b456',
             'password_again'    => '123a45',
             'mail'              => 'example@example.com',
-            'mail_retype'       => 'example@example.com'
+            'mail_retype'       => 'example@example.com',
         ]);
 
         $this->validation->rule('password', 'again(password_again)');
@@ -568,7 +569,7 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testEqualsRuleValid()
+    public function testEqualsRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '123',
@@ -582,11 +583,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testStartWithRuleValid()
+    public function testStartWithRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'lorem ipsum dolor sit amet'
+            'key_2'     => 'lorem ipsum dolor sit amet',
         ]);
 
         $this->validation->rule('key_1', 'startWith(345)');
@@ -599,11 +600,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testEndWithRuleValid()
+    public function testEndWithRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'lorem ipsum dolor sit amet'
+            'key_2'     => 'lorem ipsum dolor sit amet',
         ]);
 
         $this->validation->rule('key_1', 'endWith(345)');
@@ -616,11 +617,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testInRuleValid()
+    public function testInRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'Lorem ipsum Dolor sit amet'
+            'key_2'     => 'Lorem ipsum Dolor sit amet',
         ]);
 
         // Verifies that the desired value is within the specified value, case-insensitive.
@@ -641,11 +642,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testNotInRuleValid()
+    public function testNotInRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'Lorem ipsum Dolor sit amet'
+            'key_2'     => 'Lorem ipsum Dolor sit amet',
         ]);
 
         // Verifies case-insensitively that the requested value is not within the specified value.
@@ -666,11 +667,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->validation->validation());
     }
 
-    public function testContainsRuleValid()
+    public function testContainsRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'Lorem ipsum Dolor sit amet'
+            'key_2'     => 'Lorem ipsum Dolor sit amet',
         ]);
 
         // Verifies case sensitive that the requested value is within the specified value.
@@ -694,11 +695,11 @@ class ValidationUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->validation->validation());
     }
 
-    public function testNotContainsRuleValid()
+    public function testNotContainsRuleValid(): void
     {
         $this->validation->setData([
             'key_1'     => '12345',
-            'key_2'     => 'Lorem ipsum Dolor sit amet'
+            'key_2'     => 'Lorem ipsum Dolor sit amet',
         ]);
 
         // Verifies case sensitive that the requested value is not within the specified value.

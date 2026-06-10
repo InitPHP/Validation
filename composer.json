@@ -1,8 +1,40 @@
 {
     "name": "initphp/validation",
-    "description": "InitPHP Validation Library",
+    "description": "Fast, dependency-free data validation for PHP with a string rule DSL, callable rules and localized error messages.",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "validation",
+        "validator",
+        "rules",
+        "form",
+        "input",
+        "sanitization",
+        "initphp",
+        "php"
+    ],
+    "authors": [
+        {
+            "name": "Muhammet ŞAFAK",
+            "email": "info@muhammetsafak.com.tr",
+            "role": "Developer",
+            "homepage": "https://www.muhammetsafak.com.tr"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/InitPHP/Validation/issues",
+        "source": "https://github.com/InitPHP/Validation",
+        "docs": "https://github.com/InitPHP/Validation/tree/main/docs"
+    },
+    "require": {
+        "php": ">=8.1",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^1.12 || ^2.1",
+        "friendsofphp/php-cs-fixer": "^3.65"
+    },
     "autoload": {
         "psr-4": {
             "InitPHP\\Validation\\": "src/"
@@ -13,20 +45,34 @@
             "Tests\\InitPHP\\Validation\\": "tests/Validation/"
         }
     },
-    "authors": [
-        {
-            "name": "Muhammet ŞAFAK",
-            "email": "info@muhammetsafak.com.tr",
-            "role": "Developer",
-            "homepage": "https://www.muhammetsafak.com.tr"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=7.4",
-        "ext-mbstring": "*"
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html build/coverage",
+        "stan": "phpstan analyse --no-progress",
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "ci": [
+            "@cs-check",
+            "@stan",
+            "@test"
+        ]
     },
-    "require-dev": {
-        "phpunit/phpunit": "9.5"
+    "scripts-descriptions": {
+        "test": "Run the PHPUnit test suite.",
+        "test-coverage": "Run PHPUnit and produce an HTML coverage report under build/coverage.",
+        "stan": "Run PHPStan at the level configured in phpstan.neon.dist.",
+        "cs-check": "Report any PHP-CS-Fixer violations without modifying files.",
+        "cs-fix": "Apply PHP-CS-Fixer fixes in-place.",
+        "ci": "Run the full CI bundle locally: cs-check, stan, test."
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.0.x-dev"
+        }
     }
 }
