@@ -4,7 +4,7 @@ Fast, dependency-free data validation for PHP. Describe what each field should
 look like with a small rule DSL (`"required|integer|range(1...10)"`), callbacks,
 or custom named rules, and get back localized error messages.
 
-[![Designed & Maintained with Tan](https://www.muhammetsafak.com.tr/badges/designed-maintained-with-tan.svg)](https://www.muhammetsafak.com.tr/en/tan/)
+[![Designed & Maintained with Tan](https://muhammetsafak.com/badges/designed-maintained-with-tan.svg)](https://muhammetsafak.com/tan/)
 [![CI](https://github.com/InitPHP/Validation/actions/workflows/ci.yml/badge.svg)](https://github.com/InitPHP/Validation/actions/workflows/ci.yml)
 [![Latest Stable Version](http://poser.pugx.org/initphp/validation/v)](https://packagist.org/packages/initphp/validation) [![Total Downloads](http://poser.pugx.org/initphp/validation/downloads)](https://packagist.org/packages/initphp/validation) [![License](http://poser.pugx.org/initphp/validation/license)](https://packagist.org/packages/initphp/validation) [![PHP Version Require](http://poser.pugx.org/initphp/validation/require/php)](https://packagist.org/packages/initphp/validation)
 
@@ -245,7 +245,7 @@ and `composer ci` should pass.
 
 ## Credits
 
-- [Muhammet ŞAFAK](https://www.muhammetsafak.com.tr) <<info@muhammetsafak.com.tr>>
+- [Muhammet ŞAFAK](https://muhammetsafak.com) <<info@muhammetsafak.com>>
 
 ## License
 
