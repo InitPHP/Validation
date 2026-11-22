@@ -15,7 +15,7 @@
 ## 2.0.0 [2026.06.10]
 
 A breaking release focused on correctness, safety and developer experience.
-See [docs/upgrading-from-1.x.md](./docs/upgrading-from-1.x.md) for migration
+See [docs/Migration-from-1.x.md](./docs/Migration-from-1.x.md) for migration
 notes.
 
 ### Breaking
@@ -65,7 +65,7 @@ notes.
   optional lifecycle, callables, `extend()` and the fixed edge cases.
 - GitHub Actions CI (PHP 8.1–8.4, lowest/highest deps, style, static analysis,
   coverage) and `composer` scripts (`test`, `stan`, `cs-check`, `cs-fix`, `ci`).
-- Documentation under [`docs/`](./docs/README.md).
+- Documentation under [`docs/`](./docs/Home.md).
 
 ### 1.0.2 [2022.07.05]
 

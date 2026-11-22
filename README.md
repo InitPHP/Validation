@@ -8,7 +8,7 @@ or custom named rules, and get back localized error messages.
 [![CI](https://github.com/InitPHP/Validation/actions/workflows/ci.yml/badge.svg)](https://github.com/InitPHP/Validation/actions/workflows/ci.yml)
 [![Latest Stable Version](http://poser.pugx.org/initphp/validation/v)](https://packagist.org/packages/initphp/validation) [![Total Downloads](http://poser.pugx.org/initphp/validation/downloads)](https://packagist.org/packages/initphp/validation) [![License](http://poser.pugx.org/initphp/validation/license)](https://packagist.org/packages/initphp/validation) [![PHP Version Require](http://poser.pugx.org/initphp/validation/require/php)](https://packagist.org/packages/initphp/validation)
 
-- [Documentation](./docs/README.md)
+- [Documentation](./docs/Home.md)
 - [Changelog](./CHANGELOG.md)
 
 ## Requirements
@@ -111,7 +111,7 @@ equivalent. Rule names are matched case-insensitively.
 | `strictOnly(a, b, ...)` | Case-sensitively equals one of the options. |
 | `creditCard(type?)` | A credit card number. Optional type: `amex`, `visa`, `mastercard`, `maestro`, `jcb`, `solo`, `switch`. |
 
-See [`docs/rules-reference.md`](./docs/rules-reference.md) for a per-rule
+See [`docs/Rules-Reference.md`](./docs/Rules-Reference.md) for a per-rule
 reference with examples.
 
 ## Callable rules
@@ -198,7 +198,7 @@ $validation->setLocaleArray(['integer' => '{field} is not a whole number.']);
 ```
 
 Point at your own language directory with `setLocaleDir()`. See
-[`docs/localization-and-messages.md`](./docs/localization-and-messages.md).
+[`docs/Localization.md`](./docs/Localization.md).
 
 ## Exceptions
 
@@ -225,7 +225,7 @@ Version 2.0 is a breaking release. The headline changes:
   resolves in English, and several edge cases were fixed (argument trimming,
   open-ended `length`/`range` bounds, null-safety, loose `equals`/`again`).
 
-Full notes: [`docs/upgrading-from-1.x.md`](./docs/upgrading-from-1.x.md).
+Full notes: [`docs/Migration-from-1.x.md`](./docs/Migration-from-1.x.md).
 
 ## Testing
 
