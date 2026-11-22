@@ -32,7 +32,7 @@ class LocaleTest extends TestCase
 
         $this->assertSame(
             ['password must be the same as confirm.'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 

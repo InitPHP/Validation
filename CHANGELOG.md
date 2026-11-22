@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased]
+
+### Breaking
+
+- **Requires PHP 8.2+** (was 8.1+); `composer.json` now requires `php: ^8.2`
+  and CI covers PHP 8.2, 8.3, 8.4 and 8.5.
+
+### Changed
+
+- Code style moved to PER-CS (php-cs-fixer, shared `.php-cs-fixer.dist.php`);
+  the codebase has been reformatted accordingly.
+
 ## 2.0.0 [2026.06.10]
 
 A breaking release focused on correctness, safety and developer experience.

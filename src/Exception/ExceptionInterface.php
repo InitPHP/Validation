@@ -23,6 +23,4 @@ use Throwable;
  * Catch this interface to handle any failure that originates from
  * InitPHP Validation regardless of the concrete exception type.
  */
-interface ExceptionInterface extends Throwable
-{
-}
+interface ExceptionInterface extends Throwable {}

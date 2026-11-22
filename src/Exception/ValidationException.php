@@ -23,6 +23,4 @@ use RuntimeException;
  * Thrown for problems detected while a validator is being configured or
  * executed (for example, referencing a rule that does not exist).
  */
-class ValidationException extends RuntimeException implements ExceptionInterface
-{
-}
+class ValidationException extends RuntimeException implements ExceptionInterface {}
