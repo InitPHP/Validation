@@ -6,8 +6,8 @@ about the PHP version, error behaviour and a few corrected edge cases.
 
 ## Requirements
 
-- **PHP 8.1 or newer** is required by 2.0.0 (1.x supported 7.4+). The current
-  `main` branch raises this to **PHP 8.2 or newer**.
+- **PHP 8.1 or newer** is required by 2.0.0 (1.x supported 7.4+). Version 3.0.0
+  raises this to **PHP 8.2 or newer**.
 
 ## Behaviour changes you may need to act on
 
@@ -85,7 +85,7 @@ errors now need the new type or the marker interface.
 
 ## Quick checklist
 
-1. Bump your PHP requirement to 8.1+ (8.2+ for the current `main` branch).
+1. Bump your PHP requirement to 8.1+ (8.2+ for 3.0.0).
 2. Search your rule strings for typos and any global-function names.
 3. Update tests that asserted old message text.
 4. Catch the new exception types where you load locales.
