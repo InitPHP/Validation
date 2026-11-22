@@ -1,6 +1,11 @@
-# Change Log
+# Changelog
 
-## 3.0.0 [2026.11.22]
+All notable changes to **initphp/validation** will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [3.0.0] - 2026-11-22
 
 ### Breaking
 
@@ -12,7 +17,7 @@
 - Code style moved to PER-CS (php-cs-fixer, shared `.php-cs-fixer.dist.php`);
   the codebase has been reformatted accordingly.
 
-## 2.0.0 [2026.06.10]
+## [2.0.0] - 2026-06-10
 
 A breaking release focused on correctness, safety and developer experience.
 See [docs/Migration-from-1.x.md](./docs/Migration-from-1.x.md) for migration
@@ -67,11 +72,11 @@ notes.
   coverage) and `composer` scripts (`test`, `stan`, `cs-check`, `cs-fix`, `ci`).
 - Documentation under [`docs/`](./docs/Home.md).
 
-### 1.0.2 [2022.07.05]
+## [1.0.2] - 2022-07-05
 
 - Unit test written.
 
-### 1.0.1 [2022.03.19]
+## [1.0.1] - 2022-03-19
 
 - Fixed the issue where errors were not handled in optional data.
 - The result of the last validation operation `isValid()` method can be used.
