@@ -20,6 +20,4 @@ namespace InitPHP\Validation\Exception;
  * exist, the language file is missing, or the file does not return an array
  * of message templates.
  */
-class LocaleException extends ValidationException
-{
-}
+class LocaleException extends ValidationException {}

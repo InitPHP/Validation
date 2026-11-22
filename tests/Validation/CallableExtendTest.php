@@ -23,7 +23,7 @@ class CallableExtendTest extends TestCase
     public function testCallableRulePasses(): void
     {
         $this->validation->setData(['number' => 12]);
-        $this->validation->rule('number', static fn (int $value): bool => ($value % 2) === 0);
+        $this->validation->rule('number', static fn(int $value): bool => ($value % 2) === 0);
 
         $this->assertTrue($this->validation->validation());
     }
@@ -31,7 +31,7 @@ class CallableExtendTest extends TestCase
     public function testCallableRuleFails(): void
     {
         $this->validation->setData(['number' => 13]);
-        $this->validation->rule('number', static fn (int $value): bool => ($value % 2) === 0);
+        $this->validation->rule('number', static fn(int $value): bool => ($value % 2) === 0);
 
         $this->assertFalse($this->validation->validation());
     }
@@ -54,7 +54,7 @@ class CallableExtendTest extends TestCase
         $this->validation->setData(['number' => 8]);
         $this->validation->rule('number', [
             'integer',
-            static fn ($value): bool => $value > 5,
+            static fn($value): bool => $value > 5,
         ]);
 
         $this->assertTrue($this->validation->validation());
@@ -63,7 +63,7 @@ class CallableExtendTest extends TestCase
     public function testExtendRegistersNamedRule(): void
     {
         $this->validation->setData(['age' => 7]);
-        $this->validation->extend('even', static fn (int $value): bool => ($value % 2) === 0);
+        $this->validation->extend('even', static fn(int $value): bool => ($value % 2) === 0);
         $this->validation->rule('age', 'even');
 
         $this->assertFalse($this->validation->validation());
@@ -74,7 +74,7 @@ class CallableExtendTest extends TestCase
         $this->validation->setData(['value' => 10]);
         $this->validation->extend(
             'divisible',
-            static fn (int $value, string $by): bool => ($value % (int) $by) === 0
+            static fn(int $value, string $by): bool => ($value % (int) $by) === 0,
         );
 
         $this->validation->rule('value', 'divisible(5)');
@@ -89,8 +89,8 @@ class CallableExtendTest extends TestCase
         $this->validation->setData(['age' => 7]);
         $this->validation->extend(
             'even',
-            static fn (int $value): bool => ($value % 2) === 0,
-            '{field} must be an even number.'
+            static fn(int $value): bool => ($value % 2) === 0,
+            '{field} must be an even number.',
         );
         $this->validation->rule('age', 'even');
         $this->validation->validation();
@@ -100,7 +100,7 @@ class CallableExtendTest extends TestCase
 
     public function testExtensionsSurviveValidationRuns(): void
     {
-        $this->validation->extend('even', static fn (int $value): bool => ($value % 2) === 0);
+        $this->validation->extend('even', static fn(int $value): bool => ($value % 2) === 0);
 
         $this->validation->setData(['a' => 4])->rule('a', 'even');
         $this->assertTrue($this->validation->validation());

@@ -23,6 +23,4 @@ namespace InitPHP\Validation\Exception;
  * Extends the SPL {@see \InvalidArgumentException} while still implementing
  * {@see ExceptionInterface}, so it can be caught either way.
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
-{
-}
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface {}

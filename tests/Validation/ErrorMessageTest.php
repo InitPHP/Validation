@@ -37,7 +37,7 @@ class ErrorMessageTest extends TestCase
 
         $this->assertSame(
             ['age must be greater than or equal to 18.'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 
@@ -62,7 +62,7 @@ class ErrorMessageTest extends TestCase
 
         $this->assertSame(
             ['mail must be an e-mail at gmail.com.'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 
@@ -74,7 +74,7 @@ class ErrorMessageTest extends TestCase
 
         $this->assertSame(
             ['age is too small (min 18).'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 
@@ -83,26 +83,26 @@ class ErrorMessageTest extends TestCase
         $this->validation->setData(['number' => 13]);
         $this->validation->rule(
             'number',
-            static fn (int $value): bool => ($value % 2) === 0,
-            '{field} must be an even number.'
+            static fn(int $value): bool => ($value % 2) === 0,
+            '{field} must be an even number.',
         );
         $this->validation->validation();
 
         $this->assertSame(
             ['number must be an even number.'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 
     public function testCallableFailureFallsBackToDefaultMessage(): void
     {
         $this->validation->setData(['number' => 13]);
-        $this->validation->rule('number', static fn ($value): bool => false);
+        $this->validation->rule('number', static fn($value): bool => false);
         $this->validation->validation();
 
         $this->assertSame(
             ['The number value is not valid.'],
-            $this->validation->getError()
+            $this->validation->getError(),
         );
     }
 

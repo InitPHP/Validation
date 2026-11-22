@@ -13,7 +13,7 @@ or custom named rules, and get back localized error messages.
 
 ## Requirements
 
-- PHP 8.1 or higher
+- PHP 8.2 or higher
 - `ext-mbstring`
 
 ## Installation
