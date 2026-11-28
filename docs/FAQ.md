@@ -61,7 +61,7 @@ your own language directory — see [Localization](Localization.md).
 
 ### Which PHP versions are supported?
 
-PHP 8.2 and newer, with `ext-mbstring`. CI runs 8.2, 8.3, 8.4 and 8.5. Older
+PHP 8.2 and newer, with `ext-mbstring`. CI runs 8.2, 8.3, 8.4, 8.5 and 8.6. Older
 runtimes need an earlier release: 2.0.0 supports PHP 8.1, and the 1.x line
 supports PHP 7.4.
 
